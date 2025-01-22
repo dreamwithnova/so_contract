@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract YieldFarming {
+    mapping(address => uint256) public stakedBalances;
+    mapping(address => uint256) public rewardBalances;
+    uint256 public rewardRate = 100; // Example: 100 tokens per block
+
+    function stake(uint256 amount) public {
+        stakedBalances[msg.sender] += amount;
+    }
+
+    function calculateRewards(address staker) public view returns (uint256) {
+        return stakedBalances[staker] * rewardRate;
+    }
+
+    function withdraw() public {
+        uint256 rewards = calculateRewards(msg.sender);
+        rewardBalances[msg.sender] += rewards;
+        stakedBalances[msg.sender] = 0; // Clear staked balance
+    }
+}
