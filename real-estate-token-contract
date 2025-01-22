@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract RealEstateToken is ERC20 {
+    address public owner;
+    uint256 public propertyValue;
+
+    constructor(string memory name, string memory symbol, uint256 initialSupply, uint256 _propertyValue)
+        ERC20(name, symbol)
+    {
+        owner = msg.sender;
+        _mint(msg.sender, initialSupply);
+        propertyValue = _propertyValue;
+    }
+
+    function transferOwnership(address newOwner) public {
+        require(msg.sender == owner, "Only owner can transfer ownership");
+        owner = newOwner;
+    }
+
+    function updatePropertyValue(uint256 newValue) public {
+        require(msg.sender == owner, "Only owner can update property value");
+        propertyValue = newValue;
+    }
+}
